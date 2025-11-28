@@ -73,3 +73,28 @@ To assess the performance of the individual sensors and the fused system, the fo
 *   **Consistency**: How often the fused system agrees with the ground truth compared to individual sensors.
 *   **ID Switches**: (If tracking is involved) How often the system loses track of an object and re-assigns it a new ID.
 *   **Latency**: The time taken to process and fuse the data. Fusion should not introduce unacceptable delays.
+
+## Comparative Performance Summary
+
+| Feature | Camera Only | Radar Only | Camera + Radar Fusion |
+| :--- | :--- | :--- | :--- |
+| **Object Classification** | High Accuracy (Rich features) | Low Accuracy (Point clouds) | **High Accuracy** (Camera dominant) |
+| **Distance Accuracy** | Low (Estimated) | High (Direct measurement) | **High** (Radar dominant) |
+| **Velocity Accuracy** | Low (Estimated) | High (Doppler effect) | **High** (Radar dominant) |
+| **Low Light / Night** | Poor | Excellent | **Good** (Radar compensates) |
+| **Adverse Weather** | Poor (Rain/Fog blocks view) | Excellent | **Good** (Radar compensates) |
+| **Lateral Resolution** | High | Low | **High** (Camera dominant) |
+
+### Key "Accuracy" Metrics Explained
+
+When people ask for "Accuracy" in this context, it usually refers to a combination of these specific metrics:
+
+1.  **F1-Score**: The harmonic mean of Precision and Recall. A high F1-score means the system is both accurate (low false alarms) and robust (few missed targets).
+2.  **mAP@0.5 (Mean Average Precision)**: Measures how well the bounding boxes overlap with reality.
+    *   *Camera*: Typically **0.5 - 0.8** depending on model (YOLOv8).
+    *   *Fusion*: Can improve mAP by **5-10%** in difficult scenarios by reducing false negatives.
+3.  **Range/Velocity RMSE (Root Mean Square Error)**:
+    *   *Camera*: Range error increases quadratically with distance (e.g., 10% error).
+    *   *Radar*: Range error is constant and low (e.g., < 1% error).
+    *   *Fusion*: Retains the low error of Radar.
+
