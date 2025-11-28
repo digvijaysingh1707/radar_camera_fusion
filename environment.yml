@@ -1,0 +1,13 @@
+name: radar_camera_fusion
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - streamlit
+    - ultralytics
+    - opencv-python
+    - numpy
+    - filterpy
